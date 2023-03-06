@@ -1,0 +1,39 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    container_name: postgres-docker
+    restart: always
+    environment:
+      POSTGRES_DB: socialnet
+      POSTGRES_USER: socialnet
+      POSTGRES_PASSWORD: socialnet
+    ports:
+      - "5432:5432"
+    networks:
+      - app
+
+  app:
+    container_name: socialnet_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/socialnet
+      SPRING_DATASOURCE_USERNAME: socialnet
+      SPRING_DATASOURCE_PASSWORD: socialnet
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SERVER_ERROR_INCLUDE_MESSAGE: always
+      LOGGING_LEVEL_ORG_HIBERNATE_SQL: DEBUG
+      LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER: TRACE
+    ports:
+      - "9091:8080"
+    networks:
+      - app
+    depends_on:
+      - db
+networks:
+  app:
+  

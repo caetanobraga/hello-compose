@@ -1,0 +1,9 @@
+db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: socialnet
+      POSTGRES_USER: socialnet
+      POSTGRES_PASSWORD: socialnet
+    ports:
+      - "5432:5432"
